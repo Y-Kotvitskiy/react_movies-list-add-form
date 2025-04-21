@@ -25,7 +25,7 @@ export const NewMovie = ({ onAdd }: Props) => {
     event.preventDefault();
     onAdd(values);
     setValues(defaultValues);
-    setCount(currnetCount => currnetCount + 1);
+    setCount(currentCount => currentCount + 1);
   };
 
   const testHttpValue = (value: string, label = '') => {
@@ -42,17 +42,17 @@ export const NewMovie = ({ onAdd }: Props) => {
   };
 
   const handleFieldChange = (newValues: Partial<Movie>) => {
-    const currenValues = { ...values, ...newValues };
-    let isValid = !Object.values({ ...currenValues, description: '1' }).some(
+    const currentValues = { ...values, ...newValues };
+    let isValid = !Object.values({ ...currentValues, description: '1' }).some(
       value => value.trim() === '',
     );
 
     isValid =
       isValid &&
-      !testHttpValue(currenValues.imdbUrl) &&
-      !testHttpValue(currenValues.imgUrl);
+      !testHttpValue(currentValues.imdbUrl) &&
+      !testHttpValue(currentValues.imgUrl);
 
-    setValues(currenValues);
+    setValues(currentValues);
     setCanSubmit(isValid);
   };
 
