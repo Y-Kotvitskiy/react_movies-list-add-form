@@ -28,11 +28,29 @@ export const NewMovie = ({ onAdd }: Props) => {
     setCount(currnetCount => currnetCount + 1);
   };
 
+  const testHttpValue = (value: string, label = '') => {
+    if (
+      // eslint-disable-next-line max-len
+      /^((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www\.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@,.\w_]*)#?(?:[,.!/\\\w]*))?)$/.test(
+        value,
+      )
+    ) {
+      return '';
+    }
+
+    return `${label} has incorrect url`;
+  };
+
   const handleFieldChange = (newValues: Partial<Movie>) => {
     const currenValues = { ...values, ...newValues };
-    const isValid = !Object.values({ ...currenValues, description: '1' }).some(
+    let isValid = !Object.values({ ...currenValues, description: '1' }).some(
       value => value.trim() === '',
     );
+
+    isValid =
+      isValid &&
+      !testHttpValue(currenValues.imdbUrl) &&
+      !testHttpValue(currenValues.imgUrl);
 
     setValues(currenValues);
     setCanSubmit(isValid);
@@ -69,6 +87,7 @@ export const NewMovie = ({ onAdd }: Props) => {
           handleFieldChange({ imgUrl: newValue });
         }}
         required
+        validators={[testHttpValue]}
       />
 
       <TextField
@@ -79,6 +98,7 @@ export const NewMovie = ({ onAdd }: Props) => {
           handleFieldChange({ imdbUrl: newValue });
         }}
         required
+        validators={[testHttpValue]}
       />
 
       <TextField
